@@ -45,7 +45,7 @@ class EVO:
         if self.through:
             nums = (start, ) + self.through + (end, )
             result = 1
-            for i in range(len(all) - 1):
+            for i in range(len(nums) - 1):
                 result *= self.alg(nums[i], nums[i + 1])
 
             return result
