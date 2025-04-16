@@ -43,10 +43,10 @@ class EVO:
     
     def evo(self, start, end):
         if self.through:
-            all = (start, ) + self.through + (end, )
+            nums = (start, ) + self.through + (end, )
             result = 1
             for i in range(len(all) - 1):
-                result *= self.alg(all[i], all[i + 1])
+                result *= self.alg(nums[i], nums[i + 1])
 
             return result
         return self.alg(start, end)
