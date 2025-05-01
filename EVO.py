@@ -41,7 +41,31 @@ class EVO:
         return variants
     
     
+    def alg_light(self, start, end):
+        inversed = 1 if start < end else -1
+        tree = [0] * (max(start, end) + 1)
+        tree[start] = 1
+        for num in range(start + inversed, end + inversed, inversed):
+            for command in self.commands:
+                back = int(eval(str(num) + command.replace('+', '-').replace('*', '/')) if start < end else eval(str(num) + command.replace('-', '+').replace('/', '*')))
+                if eval(str(back) + command) == num and len(tree) > back:
+                    tree[num] += tree[back]
+            if self.through and num in self.through:
+                for nuls in range(start, num, inversed):
+                    tree[nuls] = 0
+            elif type(self.escape) is set and len(set(str(num)) & self.escape) or type(self.escape) is tuple and num in self.escape:
+                tree[num] = 0
+        return tree[end]
+
+
     def evo(self, start, end):
+        only_one = True
+        for command in self.commands:
+            if sum((command.count('*'), command.count('/'), command.count('-'), command.count('+'))) != 1:
+                only_one = False
+        if not self.double and only_one:
+            result = self.alg_light(start, end)
+            return result
         if self.through:
             nums = (start, ) + self.through + (end, )
             result = 1
